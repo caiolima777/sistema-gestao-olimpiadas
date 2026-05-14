@@ -82,7 +82,7 @@ Como **administrador**, quero gerenciar dados básicos como países, atletas e l
 
 ### Diagrama de Caso de Uso
 
-<img width="700px" src="imagens/diagrama-de-caso-de-uso.png" />
+<img width="700px" src="imagens/diagrama-CasosDeUso.png" />
 
 O diagrama de caso de uso apresenta os principais atores do sistema e suas interações com as funcionalidades principais do SGO.
 
@@ -100,7 +100,7 @@ O diagrama de pacotes organiza o sistema em camadas, separando apresentação, a
 
 ### Diagrama de Componentes
 
-<img width="700px" src="imagens/diagrama-de-componentes.png" />
+<img width="700px" src="imagens/Diagrama-Componentes.png" />
 
 O diagrama de componentes mostra os módulos principais do sistema e como eles se comunicam para atender às funcionalidades necessárias.
 
