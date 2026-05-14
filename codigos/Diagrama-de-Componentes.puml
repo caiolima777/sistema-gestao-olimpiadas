@@ -1,0 +1,86 @@
+@startuml diagrama-de-componentes
+
+skinparam componentStyle rectangle
+skinparam defaultFontName Arial
+skinparam ranksep 80
+skinparam nodesep 50
+skinparam shadowing false
+skinparam ArrowColor #444444
+skinparam ComponentBorderColor #444444
+skinparam PackageBorderColor #444444
+
+title Sistema de Gestão das Olimpíadas — Diagrama de Componentes
+
+' ── Camada de Apresentação ───────────────────────
+package "Camada de Apresentação" {
+component "Web App" as WebApp
+component "Painel Admin" as PainelAdmin
+}
+
+' ── API Central ──────────────────────────────────
+component "API do SGO" as API
+
+' ── Módulos de Negócio ───────────────────────────
+package "Módulos de Negócio" {
+component "Módulo de\nCompetições" as ModComp
+component "Módulo de\nInscrições" as ModInsc
+component "Módulo de\nAlocação" as ModAloc
+component "Módulo de\nResultados" as ModRes
+component "Módulo de\nRelatórios" as ModRel
+}
+
+' ── Serviços de Suporte ──────────────────────────
+package "Serviços de Suporte" {
+component "Serviço de\nAutenticação" as Auth
+component "Validador de\nConflitos" as Validador
+component "Validador de\nPaís/Modalidade" as ValidPais
+}
+
+' ── Camada de Dados ──────────────────────────────
+package "Camada de Dados" {
+component "Repositório\nde Dados" as Repo
+database "DB Atletas\n(PostgreSQL)" as DBAtletas
+database "DB Competições\n(PostgreSQL)" as DBComp
+database "DB Resultados\n(PostgreSQL)" as DBRes
+}
+
+' ── Exportação ───────────────────────────────────
+component "Exportação\nPDF/CSV" as Export
+
+' ── Fluxo: Apresentação → API ────────────────────
+WebApp --> API : <<use>>
+PainelAdmin --> API : <<use>>
+
+' ── API → Serviço de Autenticação ────────────────
+API --> Auth : <<use>>
+
+' ── API → Módulos de Negócio ─────────────────────
+API --> ModComp : <<use>>
+API --> ModInsc : <<use>>
+API --> ModAloc : <<use>>
+API --> ModRes : <<use>>
+API --> ModRel : <<use>>
+
+' ── Dependências entre módulos ────────────────────
+ModInsc ..> ModComp : <<use>>\nconsulta competição
+ModAloc ..> ModComp : <<use>>\nconsulta competição
+ModAloc ..> Validador : <<use>>\nverifica conflito
+ModInsc ..> ValidPais : <<use>>\nvalida país
+ModRel ..> ModRes : <<use>>\nconsulta resultados
+
+' ── Módulos → Repositório ────────────────────────
+ModComp --> Repo : <<use>>
+ModInsc --> Repo : <<use>>
+ModAloc --> Repo : <<use>>
+ModRes --> Repo : <<use>>
+ModRel --> Repo : <<use>>
+
+' ── Repositório → Bancos ─────────────────────────
+Repo --> DBAtletas : SQL
+Repo --> DBComp : SQL
+Repo --> DBRes : SQL
+
+' ── Relatório → Exportação ───────────────────────
+ModRel --> Export : gera
+
+@enduml
