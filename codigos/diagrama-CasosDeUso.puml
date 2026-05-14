@@ -1,0 +1,70 @@
+@startuml diagrama-de-caso-de-uso
+
+skinparam defaultFontName Arial
+skinparam actorStyle default
+skinparam shadowing false
+
+title Sistema de Gestão das Olimpíadas - Caso de Uso
+
+actor "Administrador\ndo Sistema"   as Admin
+actor "Gestor de\nCompetições"      as Gestor
+actor "Comitê Olímpico\n/ Delegação" as Comite
+actor "Operador de\nResultados"     as Operador
+actor "Público /\nImprensa"         as Publico
+
+rectangle "SGO - Sistema de Gestão das Olimpíadas" {
+
+  usecase "Autenticar\nusuário"               as UC00
+  usecase "Gerenciar cadastros\nbásicos"      as UC11
+  usecase "Cadastrar\ncompetição"             as UC01
+  usecase "Atualizar dados\nda competição"    as UC02
+  usecase "Consultar\ncompetições"            as UC03
+  usecase "Inscrever\natleta"                 as UC04
+  usecase "Validar país do atleta\npor modalidade" as UC05
+  usecase "Alocar\nlocal"                     as UC06
+  usecase "Verificar conflito\nde horário/local"   as UC07
+  usecase "Registrar\nresultados"             as UC08
+  usecase "Definir ouro,\nprata e bronze"     as UC08b
+  usecase "Gerar relatório\nde medalhas"      as UC09
+  usecase "Consultar quadro\nde medalhas"     as UC10
+
+}
+
+' ── Administrador ────────────────────────────────
+Admin --> UC00
+Admin --> UC11
+Admin --> UC09
+Admin --> UC10
+
+' ── Gestor de Competições ─────────────────────────
+Gestor --> UC00
+Gestor --> UC01
+Gestor --> UC02
+Gestor --> UC03
+Gestor --> UC06
+
+' ── Comitê Olímpico / Delegação ──────────────────
+Comite --> UC00
+Comite --> UC04
+Comite --> UC03
+
+' ── Operador de Resultados ───────────────────────
+Operador --> UC00
+Operador --> UC08
+
+' ── Público / Imprensa ───────────────────────────
+Publico --> UC10
+Publico --> UC03
+
+' ── include / extend ─────────────────────────────
+UC01 ..> UC06  : <<include>>
+UC02 ..> UC06  : <<include>>
+UC06 ..> UC07  : <<include>>
+
+UC04 ..> UC05  : <<include>>
+
+UC08 ..> UC08b : <<include>>
+
+UC09 ..> UC10  : <<extend>>
+
+@enduml
